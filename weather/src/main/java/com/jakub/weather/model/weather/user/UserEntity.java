@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "users")
 public class UserEntity implements UserDetails {
 
     @Id
