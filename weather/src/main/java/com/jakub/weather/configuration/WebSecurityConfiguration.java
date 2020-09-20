@@ -1,5 +1,6 @@
 package com.jakub.weather.configuration;
 
+import com.jakub.weather.service.LogOutSucessHandler;
 import com.jakub.weather.service.LoginSucessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,10 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private LoginSucessHandler sucessHandler;
+
+    @Autowired
+    private LogOutSucessHandler logOutSucessHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -33,6 +38,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
+                .logoutSuccessHandler(logOutSucessHandler)
                 .permitAll();
     }
 

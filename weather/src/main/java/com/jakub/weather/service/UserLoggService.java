@@ -24,6 +24,14 @@ public class UserLoggService {
         repo.save(logg);
     }
 
+    public void logLogout(UserEntity user){
+        UserLoggEntity logg = new UserLoggEntity();
+        logg.setMessage("User LogOut");
+        logg.setTime(LocalDateTime.now());
+        logg.setUser(user);
+        repo.save(logg);
+    }
+
     public void userCreated(UserEntity user){
         UserLoggEntity logg = new UserLoggEntity();
         logg.setMessage("User registered");

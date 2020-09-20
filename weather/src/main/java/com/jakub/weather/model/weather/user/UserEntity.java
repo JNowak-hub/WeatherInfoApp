@@ -26,8 +26,19 @@ public class UserEntity implements UserDetails {
     @Column
     private List<Role> role = new ArrayList<>();
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private UserSettingsEntity settings;
+
     public List<Role> getRole() {
         return role;
+    }
+
+    public UserSettingsEntity getSettings() {
+        return settings;
+    }
+
+    public void setSettings(UserSettingsEntity settings) {
+        this.settings = settings;
     }
 
     public void setRole(List<Role> role) {

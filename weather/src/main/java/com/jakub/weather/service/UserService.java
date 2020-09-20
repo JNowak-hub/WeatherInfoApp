@@ -3,6 +3,7 @@ package com.jakub.weather.service;
 import com.jakub.weather.exceptions.UserAlreadyExists;
 import com.jakub.weather.model.weather.user.Role;
 import com.jakub.weather.model.weather.user.UserEntity;
+import com.jakub.weather.model.weather.user.UserSettingsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,8 +40,13 @@ public class UserService {
             throw new RuntimeException("Password cannot be blank");
         }
 
+        UserSettingsEntity defaultSetting = new UserSettingsEntity();
+        defaultSetting.setDaysAmount(1L);
+        defaultSetting.setDefaultCity("Katowice");
+
         UserEntity newUser = new UserEntity(userEntity.getUserName(), encoder.encode(userEntity.getPassword()));
         newUser.getRole().add(Role.USER);
+        newUser.setSettings(defaultSetting);
 
         userRepo.save(newUser);
         loggService.userCreated(newUser);
