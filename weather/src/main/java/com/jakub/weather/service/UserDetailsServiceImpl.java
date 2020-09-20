@@ -10,6 +10,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private UserService service;
 
+    public UserDetailsServiceImpl(UserService service) {
+        this.service = service;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         return service.findUserByUsername(s).get();

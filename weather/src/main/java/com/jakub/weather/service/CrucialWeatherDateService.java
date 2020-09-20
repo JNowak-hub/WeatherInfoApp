@@ -4,7 +4,12 @@ import com.jakub.weather.exceptions.WeatherNotFoundException;
 import com.jakub.weather.model.weather.WeatherResponse;
 import com.jakub.weather.model.weather.Wind;
 import com.jakub.weather.model.weather.dto.CrucialWeatherData;
+import com.jakub.weather.model.weather.user.UserEntity;
 import com.jakub.weather.utils.WeatherApiConnector;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -15,8 +20,14 @@ public class CrucialWeatherDateService {
 
     private WeatherApiConnector connector;
 
-    public CrucialWeatherDateService(WeatherApiConnector connector) {
+    private UserApiCAllHistoryService historyService;
+
+    private UserService userService;
+
+    public CrucialWeatherDateService(WeatherApiConnector connector, UserApiCAllHistoryService historyService, UserService userService) {
         this.connector = connector;
+        this.historyService = historyService;
+        this.userService = userService;
     }
 
     public Double getTemperature(String cityName){
@@ -38,15 +49,25 @@ public class CrucialWeatherDateService {
     }
 
     public String getDataByType(String cityName, String dataType){
-        if(dataType.equals("temperature"))
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userPrincipal = (UserEntity) authentication.getPrincipal();
+
+        UserEntity user = userService.findUserByUsername(userPrincipal.getUserName()).get();
+
+        if(dataType.equals("temperature")){
+            historyService.callApi("Temperature in " + cityName + " is " + getTemperature(cityName), user);
             return "Temperature in " + cityName + " is " + getTemperature(cityName);
-        else if(dataType.equals("humidity"))
+        } else if(dataType.equals("humidity")){
+            historyService.callApi("Humidity in " + cityName + " is " + getHumidity(cityName), user);
             return "Humidity in " + cityName + " is " + getHumidity(cityName);
-        else if(dataType.equals("pressure"))
+        } else if(dataType.equals("pressure")){
+            historyService.callApi("Pressure in " + cityName + " is " + getPressure(cityName), user);
             return "Pressure in " + cityName + " is " + getPressure(cityName);
-        else if(dataType.equals("wind"))
+        }
+        else if(dataType.equals("wind")){
+            historyService.callApi("Wind in " + cityName + " is " + getWindInformation(cityName), user);
             return "Wind in " + cityName + " is " + getWindInformation(cityName);
-        else
+        } else
             throw new WeatherNotFoundException("Couldn't find data. Try to type correct input.");
     }
 
