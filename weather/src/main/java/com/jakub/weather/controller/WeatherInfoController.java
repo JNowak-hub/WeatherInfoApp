@@ -1,6 +1,8 @@
 package com.jakub.weather.controller;
 
+import com.jakub.weather.model.weather.WeatherResponse;
 import com.jakub.weather.service.CrucialWeatherDateService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,4 +24,5 @@ public class WeatherInfoController {
     public String getTemperature(@RequestParam String cityName, @RequestParam String dataType){
             return service.getDataByType(cityName, dataType);
     }
+
 }

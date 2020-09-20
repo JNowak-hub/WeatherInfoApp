@@ -5,27 +5,25 @@ import com.jakub.weather.model.weather.WeatherResponse;
 import com.jakub.weather.model.weather.Wind;
 import com.jakub.weather.model.weather.dto.CrucialWeatherData;
 import com.jakub.weather.model.weather.user.UserEntity;
-import com.jakub.weather.utils.WeatherApiConnector;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.jakub.weather.utils.WeatherApiWebClient;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.Optional;
 
 @Service
 public class CrucialWeatherDateService {
 
-    private WeatherApiConnector connector;
+
+    private WeatherApiWebClient webClient;
 
     private UserApiCAllHistoryService historyService;
 
     private UserService userService;
 
-    public CrucialWeatherDateService(WeatherApiConnector connector, UserApiCAllHistoryService historyService, UserService userService) {
-        this.connector = connector;
+    public CrucialWeatherDateService(WeatherApiWebClient webClient, UserApiCAllHistoryService historyService, UserService userService) {
+        this.webClient = webClient;
         this.historyService = historyService;
         this.userService = userService;
     }
@@ -74,14 +72,7 @@ public class CrucialWeatherDateService {
 
     public CrucialWeatherData getWeatherInfo(String cityName){
 
-        Optional<WeatherResponse> optionalCrucialWeatherData = null;
-        try {
-            optionalCrucialWeatherData = connector.weatherToClass(cityName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Optional<WeatherResponse> optionalCrucialWeatherData = webClient.getDataFromApi(cityName);
         if(optionalCrucialWeatherData.isEmpty()){
             throw new WeatherNotFoundException("Couldn't load weather information");
         }
