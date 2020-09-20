@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -28,8 +29,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/home","/api/login", "api/login/**").permitAll()
-                .antMatchers(HttpMethod.POST).permitAll()
+                .antMatchers("/", "/home","/api/login", "/api/login/**").permitAll()
+//                .antMatchers(HttpMethod.POST).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

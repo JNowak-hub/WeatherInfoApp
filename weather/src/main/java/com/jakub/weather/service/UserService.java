@@ -1,10 +1,13 @@
 package com.jakub.weather.service;
 
 import com.jakub.weather.exceptions.UserAlreadyExists;
+import com.jakub.weather.model.weather.dto.UserSettingRequest;
 import com.jakub.weather.model.weather.user.Role;
 import com.jakub.weather.model.weather.user.UserEntity;
 import com.jakub.weather.model.weather.user.UserSettingsEntity;
+import com.jakub.weather.utils.UserSettingMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.jakub.weather.repo.UserRepo;
@@ -19,12 +22,15 @@ public class UserService {
 
     private UserLoggService loggService;
 
+    private UserSettingMapper settingMapper;
+
     @Autowired
     private BCryptPasswordEncoder encoder;
 
-    public UserService(UserRepo userRepo, UserLoggService loggService) {
+    public UserService(UserRepo userRepo, UserLoggService loggService, UserSettingMapper settingMapper) {
         this.userRepo = userRepo;
         this.loggService = loggService;
+        this.settingMapper = settingMapper;
     }
 
     public UserEntity findById(Long id){
@@ -55,5 +61,12 @@ public class UserService {
 
     public Optional<UserEntity> findUserByUsername(String username) {
         return userRepo.findByUsername(username);
+    }
+
+    public void updateUserSettings(UserSettingRequest request){
+        UserEntity currentUser = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserEntity userInDb = userRepo.getOne(currentUser.getId());
+        settingMapper.changeSettings(request, userInDb);
+        userRepo.save(userInDb);
     }
 }
