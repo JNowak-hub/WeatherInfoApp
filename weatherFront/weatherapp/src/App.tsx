@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { Router } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
+import SignInPage from "./components/SinginPage";
 function App() {
   return (
     <BrowserRouter>
@@ -22,8 +23,8 @@ function App() {
           <Route exact path="/login">
             <LoginPage />
           </Route>
-          <Route exact path="/products">
-            PRODUKTS
+          <Route exact path="/signin">
+            <SignInPage />
           </Route>
         </Switch>
       </BackGroundWrapper>

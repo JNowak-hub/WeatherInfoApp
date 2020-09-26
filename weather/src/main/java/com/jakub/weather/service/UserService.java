@@ -39,7 +39,7 @@ public class UserService {
 
     public UserEntity createNewUser(UserEntity userEntity){
 
-        if(findUserByUsername(userEntity.getUserName()) != null){
+        if(userRepo.findByUsername(userEntity.getUserName()).isPresent()){
             throw new UserAlreadyExists("user " + userEntity.getUserName() + " already exists, pick other userName");
         }
         if(userEntity.getPassword().isEmpty()){

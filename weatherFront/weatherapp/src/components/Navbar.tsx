@@ -44,6 +44,11 @@ const Navbar = () => {
           <NavbarButtonWrapper>Login</NavbarButtonWrapper>
         </Link>
       </NavbarItem>
+      <NavbarItem>
+        <Link to="/signin">
+          <NavbarButtonWrapper>Sign In</NavbarButtonWrapper>
+        </Link>
+      </NavbarItem>
     </NavbarWrapper>
   );
 };

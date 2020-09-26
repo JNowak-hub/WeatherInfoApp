@@ -24,7 +24,7 @@ public class LoginSingInController {
         this.loginService = loginService;
     }
 
-    @PostMapping("/singIn")
+    @PostMapping("/signIn")
     public ResponseEntity<UserEntity> singIn(@RequestBody UserEntity user){
 
         UserEntity newUser = service.createNewUser(user);
