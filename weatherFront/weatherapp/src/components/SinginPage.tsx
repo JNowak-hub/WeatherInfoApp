@@ -2,6 +2,7 @@ import React from "react";
 import FormWrapper from "../styles/LoginFormWrapper";
 import InputWrapper from "../styles/InputFieldWrapper";
 import ButtonWrapper from "../styles/ButtonWrapper";
+
 const SinginPage = () => {
   const provider = "local";
   const [userName, setUserName] = React.useState("");
@@ -10,22 +11,6 @@ const SinginPage = () => {
   const [password, setPassword] = React.useState("");
 
   const signIn = async () => {
-    // POST request using fetch with async/await
-    const requestOptions = {
-      method: "POST",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        userName: userName,
-        password: password,
-        email: email,
-        name: name,
-        provider: provider,
-      }),
-    };
     const response = await fetch("http://localhost:8080/api/login/signIn", {
       method: "POST",
       credentials: "same-origin",

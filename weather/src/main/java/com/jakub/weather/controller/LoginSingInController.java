@@ -34,9 +34,9 @@ public class LoginSingInController {
 
     @SneakyThrows
     @PostMapping
-    public HttpStatus login(@RequestBody AuthorizationRequest authRequest, HttpServletResponse response){
+    public ResponseEntity<HttpServletResponse> login(@RequestBody AuthorizationRequest authRequest, HttpServletResponse response){
         loginService.authorization(authRequest);
-        response.sendRedirect("http://localhost:3000/Home");
-        return HttpStatus.OK;
+        response.setHeader("Location", "http://localhost:3000/Home");
+        return ResponseEntity.ok(response);
     }
 }
