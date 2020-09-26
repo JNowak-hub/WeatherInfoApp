@@ -4,6 +4,7 @@ import NavbarWrapper from "../styles/NavbarWrapper";
 import NavbarItem from "../styles/NavbarItem";
 import { Link } from "react-router-dom";
 import NavbarButtonWrapper from "../styles/NavbarButtonWrapper";
+import TimeWrapper from "../styles/TimeWrapper";
 const Navbar = () => {
   const [time, setTime] = React.useState("");
 
@@ -30,7 +31,9 @@ const Navbar = () => {
 
   return (
     <NavbarWrapper>
-      <NavbarItem>Time: {time}</NavbarItem>
+      <NavbarItem>
+        <TimeWrapper>Time: {time}</TimeWrapper>
+      </NavbarItem>
       <NavbarItem>
         <Link to="/">
           <NavbarButtonWrapper>Home</NavbarButtonWrapper>

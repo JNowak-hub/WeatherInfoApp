@@ -3,7 +3,7 @@ import React from "react";
 import Navbar from "./components/Navbar";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { Router } from "react-router-dom";
-
+import LoginPage from "./components/LoginPage";
 function App() {
   return (
     <BrowserRouter>
@@ -20,7 +20,7 @@ function App() {
             HOME
           </Route>
           <Route exact path="/login">
-            LOGIN
+            <LoginPage />
           </Route>
           <Route exact path="/products">
             PRODUKTS

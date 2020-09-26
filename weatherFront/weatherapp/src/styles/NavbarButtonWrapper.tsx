@@ -15,6 +15,7 @@ const NavbarButtonWrapper = styled.div`
     align-items: center;
   }
   :hover {
+    background: rgba(19, 50, 162, 0.14);
     cursor: pointer;
   }
 `;
