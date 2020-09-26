@@ -1,6 +1,7 @@
 package com.jakub.weather.service;
 
 import com.jakub.weather.exceptions.UserAlreadyExists;
+import com.jakub.weather.exceptions.UserNotFoundException;
 import com.jakub.weather.model.weather.dto.UserSettingRequest;
 import com.jakub.weather.model.weather.user.Role;
 import com.jakub.weather.model.weather.user.UserEntity;
@@ -38,7 +39,7 @@ public class UserService {
 
     public UserEntity createNewUser(UserEntity userEntity){
 
-        if(findUserByUsername(userEntity.getUserName()).isPresent()){
+        if(findUserByUsername(userEntity.getUserName()) != null){
             throw new UserAlreadyExists("user " + userEntity.getUserName() + " already exists, pick other userName");
         }
         if(userEntity.getPassword().isEmpty()){
@@ -58,8 +59,12 @@ public class UserService {
         return newUser;
     }
 
-    public Optional<UserEntity> findUserByUsername(String username) {
-        return userRepo.findByUsername(username);
+    public UserEntity findUserByUsername(String username) {
+        Optional<UserEntity> potentialUser = userRepo.findByUsername(username);
+        if(potentialUser.isPresent()){
+            return potentialUser.get();
+        }
+        throw new UserNotFoundException("User : " + username + " doesn't exists" );
     }
 
     public void updateUserSettings(UserSettingRequest request){

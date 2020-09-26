@@ -50,7 +50,7 @@ public class CrucialWeatherDateService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserEntity userPrincipal = (UserEntity) authentication.getPrincipal();
 
-        UserEntity user = userService.findUserByUsername(userPrincipal.getUserName()).get();
+        UserEntity user = userService.findUserByUsername(userPrincipal.getUserName());
 
         if(dataType.equals("temperature")){
             historyService.callApi("Temperature in " + cityName + " is " + getTemperature(cityName), user);

@@ -1,21 +1,27 @@
 package com.jakub.weather.controller;
 
+import com.jakub.weather.model.weather.authorization.AuthorizationRequest;
 import com.jakub.weather.model.weather.user.UserEntity;
+import com.jakub.weather.service.LoginService;
 import com.jakub.weather.service.UserService;
+import lombok.SneakyThrows;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.net.http.HttpResponse;
 
 @RestController
 @RequestMapping("/api/login")
+@CrossOrigin("http://localhost:3000")
 public class LoginSingInController {
 
     private UserService service;
+    private LoginService loginService;
 
-    public LoginSingInController(UserService service) {
+    public LoginSingInController(UserService service, LoginService loginService) {
         this.service = service;
+        this.loginService = loginService;
     }
 
     @PostMapping("/singIn")
@@ -24,5 +30,13 @@ public class LoginSingInController {
         UserEntity newUser = service.createNewUser(user);
 
         return ResponseEntity.ok(newUser);
+    }
+
+    @SneakyThrows
+    @PostMapping
+    public HttpStatus login(@RequestBody AuthorizationRequest authRequest, HttpServletResponse response){
+        loginService.authorization(authRequest);
+        response.sendRedirect("http://localhost:3000/Home");
+        return HttpStatus.OK;
     }
 }
