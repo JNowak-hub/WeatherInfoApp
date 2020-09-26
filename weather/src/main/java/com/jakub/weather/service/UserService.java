@@ -12,7 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.jakub.weather.repo.UserRepo;
 
-import javax.persistence.Access;
 import java.util.Optional;
 
 @Service

@@ -24,7 +24,7 @@ public class CrutialWeatherDataServiceTest {
 
     @Test
     public void getCrucialDataInfo(){
-        
+
         CrucialWeatherData data = service.getWeatherInfo("Katowice");
         Assert.assertNotNull(data);
     }
