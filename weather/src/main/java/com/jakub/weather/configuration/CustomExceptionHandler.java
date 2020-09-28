@@ -4,6 +4,8 @@ package com.jakub.weather.configuration;
 import com.jakub.weather.exceptions.UserAlreadyExists;
 import com.jakub.weather.exceptions.UserNotFoundException;
 import com.jakub.weather.exceptions.WeatherNotFoundException;
+import com.jakub.weather.exceptions.WrongInputException;
+import jdk.jfr.Experimental;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -30,5 +32,10 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(WeatherNotFoundException.class)
     public final ResponseEntity<String> handleWeatherNotFoundException(WeatherNotFoundException ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(WrongInputException.class)
+    public final ResponseEntity<String> handleWrongInputException(WrongInputException ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
