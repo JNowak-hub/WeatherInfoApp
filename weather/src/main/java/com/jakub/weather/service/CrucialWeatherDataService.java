@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class CrucialWeatherDateService {
+public class CrucialWeatherDataService {
 
 
     private WeatherApiWebClient webClient;
@@ -22,35 +22,34 @@ public class CrucialWeatherDateService {
 
     private UserService userService;
 
-    public CrucialWeatherDateService(WeatherApiWebClient webClient, UserApiCAllHistoryService historyService, UserService userService) {
+    public CrucialWeatherDataService(WeatherApiWebClient webClient, UserApiCAllHistoryService historyService, UserService userService) {
         this.webClient = webClient;
         this.historyService = historyService;
         this.userService = userService;
     }
 
-    public Double getTemperature(String cityName){
-        CrucialWeatherData data = getWeatherInfo(cityName);
-        return data.getTemperature();
+    private Double getTemperature(String cityName){
+        return getWeatherInfo(cityName).getTemperature();
     }
-    public Integer getPressure(String cityName){
-        CrucialWeatherData data = getWeatherInfo(cityName);
-        return data.getPressure();
+    private Integer getPressure(String cityName){
+        return getWeatherInfo(cityName).getPressure();
     }
-    public Integer getHumidity(String cityName){
-        CrucialWeatherData data = getWeatherInfo(cityName);
-        return data.getHumidity();
+    private Integer getHumidity(String cityName){
+        return getWeatherInfo(cityName).getHumidity();
     }
 
-    public Wind getWindInformation(String cityName){
-        CrucialWeatherData data = getWeatherInfo(cityName);
-        return data.getWindInfo();
+    private Wind getWindInformation(String cityName){
+        return getWeatherInfo(cityName).getWindInfo();
     }
 
     public String getDataByType(String cityName, String dataType){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserEntity userPrincipal = (UserEntity) authentication.getPrincipal();
+        String currentUsername = ((UserEntity) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal())
+                .getUserName();
 
-        UserEntity user = userService.findUserByUsername(userPrincipal.getUserName());
+        UserEntity user = userService.findUserByUsername(currentUsername);
 
         if(dataType.equals("temperature")){
             historyService.callApi("Temperature in " + cityName + " is " + getTemperature(cityName), user);
@@ -66,24 +65,21 @@ public class CrucialWeatherDateService {
             historyService.callApi("Wind in " + cityName + " is " + getWindInformation(cityName), user);
             return "Wind in " + cityName + " is " + getWindInformation(cityName);
         } else
-            throw new WeatherNotFoundException("Couldn't find data. Try to type correct input.");
+            throw new WeatherNotFoundException("Couldn't find data. Try to type correct information type.");
     }
 
 
     public CrucialWeatherData getWeatherInfo(String cityName){
 
-        Optional<WeatherResponse> optionalCrucialWeatherData = webClient.getDataFromApi(cityName);
-        if(optionalCrucialWeatherData.isEmpty()){
-            throw new WeatherNotFoundException("Couldn't load weather information");
-        }
-        WeatherResponse response = optionalCrucialWeatherData.get();
-        CrucialWeatherData data = new CrucialWeatherData();
-        data.setHumidity(response.getMain().getHumidity());
-        data.setPressure(response.getMain().getPressure());
-        data.setTemperature(response.getMain().getTemp());
-        data.setWindInfo(response.getWind());
+        WeatherResponse weatherData = webClient.getDataFromApi(cityName);
 
-        return data;
+        CrucialWeatherData weatherInfo = new CrucialWeatherData();
+        weatherInfo.setHumidity(weatherData.getMain().getHumidity());
+        weatherInfo.setPressure(weatherData.getMain().getPressure());
+        weatherInfo.setTemperature(weatherData.getMain().getTemp());
+        weatherInfo.setWindInfo(weatherData.getWind());
+
+        return weatherInfo;
     }
 
 }

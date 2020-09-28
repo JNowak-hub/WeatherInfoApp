@@ -61,11 +61,10 @@
 			<artifactId>reactor-spring</artifactId>
 			<version>1.0.1.RELEASE</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
 		<dependency>
 			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>1.10.19</version>
+			<artifactId>mockito-core</artifactId>
+			<version>2.21.0</version>
 			<scope>test</scope>
 		</dependency>
 

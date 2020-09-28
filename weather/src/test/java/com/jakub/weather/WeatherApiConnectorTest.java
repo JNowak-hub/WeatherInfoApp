@@ -18,7 +18,7 @@ public class WeatherApiConnectorTest {
     @Test
     void mapInfoToClass() throws IOException, InterruptedException {
         WeatherResponse response = null;
-        response = connector.getDataFromApi("Katowice").get();
+        response = connector.getDataFromApi("Katowice");
         Assert.assertNotNull(response);
     }
 }
