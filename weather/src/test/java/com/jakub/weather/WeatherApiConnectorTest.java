@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class WeatherApiConnectorTest {
@@ -31,15 +32,16 @@ public class WeatherApiConnectorTest {
     }
 
     @Test(expected = WrongInputException.class)
-    public void Given_Blank_CityName_When_getDataFormApi_Than_Throw_WrongInputException(){
+    public void Given_Blank_CityName_When_getDataFormApi_Than_Throw_WrongInputException() {
         //given
         String cityName = "   ";
         //when
         connector.getDataFromApi(cityName);
         //than throws exception
     }
+
     @Test(expected = WrongInputException.class)
-    public void Given_Empty_CityName_When_getDataFormApi_Than_Throw_WrongInputException(){
+    public void Given_Empty_CityName_When_getDataFormApi_Than_Throw_WrongInputException() {
         //given
         String cityName = "   ";
         //when

@@ -6,11 +6,11 @@ import com.jakub.weather.model.weather.WeatherResponse;
 import com.jakub.weather.model.weather.Wind;
 import com.jakub.weather.model.weather.dto.CrucialWeatherData;
 import com.jakub.weather.utils.WeatherApiWebClient;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,7 +27,7 @@ public class CrutialWeatherDataServiceTest {
     private static final double WIND_SPEED = 50.0;
     private static final int PRESSURE = 15;
     private static final int HUMIDITY = 22;
-    private static final int TEMPERATURE = 11;
+    private static final double TEMPERATURE = 11.0;
 
     @Autowired
     private UserApiCAllHistoryService historyService;
@@ -36,7 +36,7 @@ public class CrutialWeatherDataServiceTest {
     private UserService userService;
 
     @Test
-    public void Given_CityName_When_GetWeatherInfo_Then_ReturnWeatherData(){
+    public void Given_CityName_When_GetWeatherInfo_Then_ReturnWeatherData() {
         //given
         WeatherApiWebClient webClientMock = mock(WeatherApiWebClient.class);
         WeatherResponse respone = createWeatherResponse();
@@ -51,7 +51,7 @@ public class CrutialWeatherDataServiceTest {
     }
 
     @Test(expected = WeatherNotFoundException.class)
-    public void Given_CityName_When_GetWeatherInfo_Then_Throw_WeatherNotFoundException(){
+    public void Given_CityName_When_GetWeatherInfo_Then_Throw_WeatherNotFoundException() {
         //given
         WeatherApiWebClient webClientMock = mock(WeatherApiWebClient.class);
         when(webClientMock.getDataFromApi(any())).thenThrow(WeatherNotFoundException.class);
@@ -62,7 +62,53 @@ public class CrutialWeatherDataServiceTest {
 
     }
 
-    private WeatherResponse createWeatherResponse(){
+    @Test
+    @WithMockUser(username="admin")
+    public void Given_CityName_AND_DataType_When_getDataByType_Then_CustomString() {
+        //given
+        WeatherApiWebClient webClientMock = mock(WeatherApiWebClient.class);
+        WeatherResponse respone = createWeatherResponse();
+        when(webClientMock.getDataFromApi(any())).thenReturn(respone);
+        CrucialWeatherDataService service = new CrucialWeatherDataService(webClientMock, historyService, userService);
+        //when
+        String temperatureData = service.getDataByType("Katowice", "temperature");
+        String humidityData = service.getDataByType("Katowice", "humidity");
+        String pressureData = service.getDataByType("Katowice", "pressure");
+        String windData = service.getDataByType("Katowice", "wind");
+        //than
+        assertThat(temperatureData).isEqualTo("Temperature in " + "Katowice" + " is " + TEMPERATURE);
+        assertThat(humidityData).isEqualTo("Humidity in " + "Katowice" + " is " + HUMIDITY);
+        assertThat(pressureData).isEqualTo("Pressure in " + "Katowice" + " is " + PRESSURE);
+        assertThat(windData).isEqualTo("Wind in " + "Katowice" + " is " + createWeatherResponse().getWind());
+    }
+    @Test(expected = WeatherNotFoundException.class)
+    @WithMockUser(username="admin")
+    public void Given_CityName_AND_DataType_When_getDataByType_Then_Throw_WeatherNotFoundException() {
+        //given
+        WeatherApiWebClient webClientMock = mock(WeatherApiWebClient.class);
+        WeatherResponse respone = createWeatherResponse();
+        when(webClientMock.getDataFromApi(any())).thenReturn(respone);
+        CrucialWeatherDataService service = new CrucialWeatherDataService(webClientMock, historyService, userService);
+        //when
+        String temperatureData = service.getDataByType("Katowice", "randomInput");
+        //than throws exception
+
+    }
+    @Test(expected = WeatherNotFoundException.class)
+    @WithMockUser(username="admin")
+    public void Given_CityName_AND_NullDataType_When_getDataByType_Then_WeatherNotFoundException() {
+        //given
+        WeatherApiWebClient webClientMock = mock(WeatherApiWebClient.class);
+        WeatherResponse respone = createWeatherResponse();
+        when(webClientMock.getDataFromApi(any())).thenReturn(respone);
+        CrucialWeatherDataService service = new CrucialWeatherDataService(webClientMock, historyService, userService);
+        //when
+        String temperatureData = service.getDataByType("Katowice", null);
+        //than throw exception
+    }
+
+
+    private WeatherResponse createWeatherResponse() {
         WeatherResponse response = new WeatherResponse();
 
         Wind wind = new Wind();
