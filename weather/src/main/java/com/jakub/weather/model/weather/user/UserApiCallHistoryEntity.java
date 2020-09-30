@@ -12,7 +12,7 @@ public class UserApiCallHistoryEntity {
 
     private LocalDateTime time;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity userEntity;
 

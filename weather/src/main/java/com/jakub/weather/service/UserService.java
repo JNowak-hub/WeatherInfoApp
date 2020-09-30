@@ -4,6 +4,7 @@ import com.jakub.weather.exceptions.UserAlreadyExists;
 import com.jakub.weather.exceptions.UserNotFoundException;
 import com.jakub.weather.model.weather.dto.UserSettingRequest;
 import com.jakub.weather.model.weather.user.Role;
+import com.jakub.weather.model.weather.user.RoleEnum;
 import com.jakub.weather.model.weather.user.UserEntity;
 import com.jakub.weather.model.weather.user.UserSettingsEntity;
 import com.jakub.weather.utils.UserSettingMapper;
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.jakub.weather.repo.UserRepo;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -24,19 +26,22 @@ public class UserService {
 
     private UserSettingMapper settingMapper;
 
+    private RoleService roleService;
     @Autowired
     private BCryptPasswordEncoder encoder;
 
-    public UserService(UserRepo userRepo, UserLoggService loggService, UserSettingMapper settingMapper) {
+    public UserService(UserRepo userRepo, UserLoggService loggService, UserSettingMapper settingMapper, RoleService roleService) {
         this.userRepo = userRepo;
         this.loggService = loggService;
         this.settingMapper = settingMapper;
+        this.roleService = roleService;
     }
 
     public UserEntity findById(Long id){
         return userRepo.findById(id).get();
     }
 
+    @Transactional
     public UserEntity createNewUser(UserEntity userEntity){
 
         if(userRepo.findByUsername(userEntity.getUserName()).isPresent()){
@@ -51,7 +56,7 @@ public class UserService {
         defaultSetting.setDefaultCity("Katowice");
 
         UserEntity newUser = new UserEntity(userEntity.getUserName(), encoder.encode(userEntity.getPassword()));
-        newUser.getRole().add(Role.USER);
+        newUser.getRole().add(roleService.getRoleByName("USER"));
         newUser.setSettings(defaultSetting);
 
         userRepo.save(newUser);
@@ -67,6 +72,7 @@ public class UserService {
         throw new UserNotFoundException("User : " + username + " doesn't exists" );
     }
 
+    @Transactional
     public void updateUserSettings(UserSettingRequest request){
         UserEntity currentUser = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserEntity userInDb = userRepo.getOne(currentUser.getId());
@@ -74,7 +80,9 @@ public class UserService {
         userRepo.save(userInDb);
     }
 
+    @Transactional
     public void deleteUserByUserName(String username){
-        userRepo.delete(findUserByUsername(username));
+        UserEntity user = findUserByUsername(username);
+        userRepo.delete(user);
     }
 }

@@ -19,19 +19,22 @@ public class UserEntity implements UserDetails {
     private String userName;
     @Column(nullable = false)
     private String password;
-
-    @ElementCollection(targetClass=Role.class, fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name="role")
-    @Column
+//
+//    @ElementCollection(targetClass= RoleEnum.class, fetch = FetchType.LAZY)
+//    @Enumerated(EnumType.STRING)
+//    @CollectionTable(name="user_roles",
+//    joinColumns = @JoinColumn(name = "user_id"))
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Role> role = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     private UserSettingsEntity settings;
 
-    public List<Role> getRole() {
-        return role;
-    }
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<UserLoggEntity> logs;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<UserApiCallHistoryEntity> userCalls;
 
     public UserSettingsEntity getSettings() {
         return settings;
@@ -39,6 +42,10 @@ public class UserEntity implements UserDetails {
 
     public void setSettings(UserSettingsEntity settings) {
         this.settings = settings;
+    }
+
+    public List<Role> getRole() {
+        return role;
     }
 
     public void setRole(List<Role> role) {

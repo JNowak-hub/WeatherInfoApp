@@ -1,12 +1,54 @@
 package com.jakub.weather.model.weather.user;
 
+import org.hibernate.annotations.Cascade;
 import org.springframework.security.core.GrantedAuthority;
 
-public enum Role implements GrantedAuthority {
-    USER, ADMIN;
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+public class Role implements GrantedAuthority {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String role;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "users_role",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<UserEntity> users;
+
+
+    public Role() {
+    }
+
+    public Role(String role) {
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @Override
     public String getAuthority() {
-        return this.name();
+        return role;
     }
 }
