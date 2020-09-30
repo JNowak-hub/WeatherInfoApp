@@ -16,7 +16,7 @@ public class WeatherApiWebClient {
 
     public WeatherResponse getDataFromApi(String cityName) {
 
-        if (cityName.isBlank() || cityName.isEmpty()) {
+        if (cityName == null || cityName.isBlank() || cityName.isEmpty()) {
             throw new WrongInputException("City name cannot be empty or start with blank characters!");
         }
         WebClient.RequestBodySpec request = WebClient.create()

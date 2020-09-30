@@ -38,7 +38,7 @@ public class CrucialWeatherDataService {
 
         UserEntity user = userService.findUserByUsername(currentUsername);
         if (dataType == null) {
-            throw new WeatherNotFoundException("input cannot be empty.");
+            throw new WeatherNotFoundException("input dataType cannot be null.");
         } else if (checkStringIfNotEmptyOrNull(dataType) && dataType.equals("humidity")) {
             historyService.callApi("Humidity in " + cityName + " is " + getHumidity(cityName), user);
             return "Humidity in " + cityName + " is " + getHumidity(cityName);

@@ -73,4 +73,8 @@ public class UserService {
         settingMapper.changeSettings(request, userInDb);
         userRepo.save(userInDb);
     }
+
+    public void deleteUserByUserName(String username){
+        userRepo.delete(findUserByUsername(username));
+    }
 }

@@ -6,20 +6,18 @@ import com.jakub.weather.model.weather.WeatherResponse;
 import com.jakub.weather.model.weather.Wind;
 import com.jakub.weather.model.weather.dto.CrucialWeatherData;
 import com.jakub.weather.utils.WeatherApiWebClient;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class CrutialWeatherDataServiceTest {
 
@@ -50,15 +48,17 @@ public class CrutialWeatherDataServiceTest {
         assertThat(data.getTemperature()).isEqualTo(TEMPERATURE);
     }
 
-    @Test(expected = WeatherNotFoundException.class)
+    @Test
     public void Given_CityName_When_GetWeatherInfo_Then_Throw_WeatherNotFoundException() {
         //given
         WeatherApiWebClient webClientMock = mock(WeatherApiWebClient.class);
         when(webClientMock.getDataFromApi(any())).thenThrow(WeatherNotFoundException.class);
         CrucialWeatherDataService service = new CrucialWeatherDataService(webClientMock, historyService, userService);
         //when
-        CrucialWeatherData data = service.getWeatherInfo("Katowice");
+        WeatherNotFoundException myException = assertThrows(WeatherNotFoundException.class, () ->service.getWeatherInfo("Katowice"));
+
         //than throws exception
+        assertThat(myException).isInstanceOf(WeatherNotFoundException.class);
 
     }
 
@@ -81,7 +81,7 @@ public class CrutialWeatherDataServiceTest {
         assertThat(pressureData).isEqualTo("Pressure in " + "Katowice" + " is " + PRESSURE);
         assertThat(windData).isEqualTo("Wind in " + "Katowice" + " is " + createWeatherResponse().getWind());
     }
-    @Test(expected = WeatherNotFoundException.class)
+    @Test
     @WithMockUser(username="admin")
     public void Given_CityName_AND_DataType_When_getDataByType_Then_Throw_WeatherNotFoundException() {
         //given
@@ -90,11 +90,11 @@ public class CrutialWeatherDataServiceTest {
         when(webClientMock.getDataFromApi(any())).thenReturn(respone);
         CrucialWeatherDataService service = new CrucialWeatherDataService(webClientMock, historyService, userService);
         //when
-        String temperatureData = service.getDataByType("Katowice", "randomInput");
+        WeatherNotFoundException myException = assertThrows(WeatherNotFoundException.class, () ->service.getDataByType("Katowice", "randomInput"));
         //than throws exception
-
+        assertThat(myException.getMessage()).isEqualTo("Couldn't find data. Try to type correct information type.");
     }
-    @Test(expected = WeatherNotFoundException.class)
+    @Test
     @WithMockUser(username="admin")
     public void Given_CityName_AND_NullDataType_When_getDataByType_Then_WeatherNotFoundException() {
         //given
@@ -103,8 +103,9 @@ public class CrutialWeatherDataServiceTest {
         when(webClientMock.getDataFromApi(any())).thenReturn(respone);
         CrucialWeatherDataService service = new CrucialWeatherDataService(webClientMock, historyService, userService);
         //when
-        String temperatureData = service.getDataByType("Katowice", null);
+        WeatherNotFoundException myException = assertThrows(WeatherNotFoundException.class, () ->service.getDataByType("Katowice", null));
         //than throw exception
+        assertThat(myException.getMessage()).isEqualTo("input dataType cannot be null.");
     }
 
 
@@ -125,3 +126,4 @@ public class CrutialWeatherDataServiceTest {
         return response;
     }
 }
+

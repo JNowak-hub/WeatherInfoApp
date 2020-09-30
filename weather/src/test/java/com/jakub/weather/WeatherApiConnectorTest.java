@@ -3,18 +3,16 @@ package com.jakub.weather;
 import com.jakub.weather.exceptions.WrongInputException;
 import com.jakub.weather.model.weather.WeatherResponse;
 import com.jakub.weather.utils.WeatherApiWebClient;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class WeatherApiConnectorTest {
 
@@ -31,22 +29,34 @@ public class WeatherApiConnectorTest {
         assertThat(response).isNotNull();
     }
 
-    @Test(expected = WrongInputException.class)
+    @Test
     public void Given_Blank_CityName_When_getDataFormApi_Than_Throw_WrongInputException() {
         //given
         String cityName = "   ";
         //when
-        connector.getDataFromApi(cityName);
+        WrongInputException myException = assertThrows(WrongInputException.class, () -> connector.getDataFromApi(cityName));
         //than throws exception
+        assertThat(myException.getMessage()).isEqualTo("City name cannot be empty or start with blank characters!");
     }
 
-    @Test(expected = WrongInputException.class)
+    @Test
     public void Given_Empty_CityName_When_getDataFormApi_Than_Throw_WrongInputException() {
         //given
-        String cityName = "   ";
+        String cityName = "";
         //when
-        connector.getDataFromApi(cityName);
+        WrongInputException myException = assertThrows(WrongInputException.class, () -> connector.getDataFromApi(cityName));
         //than throws exception
+        assertThat(myException.getMessage()).isEqualTo("City name cannot be empty or start with blank characters!");
+    }
+
+    @Test
+    public void Given_Null_CityName_When_getDataFormApi_Than_Throw_WrongInputException() {
+        //given
+        String cityName = null;
+        //when
+        WrongInputException myException = assertThrows(WrongInputException.class, () -> connector.getDataFromApi(cityName));
+        //than throws exception
+        assertThat(myException.getMessage()).isEqualTo("City name cannot be empty or start with blank characters!");
     }
 
 }
