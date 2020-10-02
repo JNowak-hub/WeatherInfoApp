@@ -24,10 +24,10 @@ public class UserEntity implements UserDetails {
 //    @Enumerated(EnumType.STRING)
 //    @CollectionTable(name="user_roles",
 //    joinColumns = @JoinColumn(name = "user_id"))
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Role.class, mappedBy = "users")
     private List<Role> role = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, targetEntity = UserSettingsEntity.class)
     private UserSettingsEntity settings;
 
 

@@ -15,7 +15,7 @@ public class UserSettingsEntity {
     @Column
     private Long daysAmount;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, targetEntity = UserEntity.class, mappedBy = "settings")
     private UserEntity user;
 
     public UserEntity getUser() {

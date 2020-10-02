@@ -10,7 +10,7 @@ public class UserLoggEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, targetEntity = UserEntity.class)
     @JoinColumn(name="user_id", nullable = false)
     private UserEntity user;
 
