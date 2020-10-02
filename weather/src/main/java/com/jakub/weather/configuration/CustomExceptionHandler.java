@@ -41,4 +41,9 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler
     public final ResponseEntity<String> handleRoleNotFoundException(RoleNotFoundException ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(UserSettingsNotFoundException.class)
+    public final ResponseEntity<String> handleUserSettingsNotFoundException(UserSettingsNotFoundException ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }

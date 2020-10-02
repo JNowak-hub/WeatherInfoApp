@@ -30,11 +30,6 @@ public class UserEntity implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     private UserSettingsEntity settings;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<UserLoggEntity> logs;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<UserApiCallHistoryEntity> userCalls;
 
     public UserSettingsEntity getSettings() {
         return settings;

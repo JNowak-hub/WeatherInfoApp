@@ -15,6 +15,17 @@ public class UserSettingsEntity {
     @Column
     private Long daysAmount;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private UserEntity user;
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
     public String getDefaultCity() {
         return defaultCity;
     }
