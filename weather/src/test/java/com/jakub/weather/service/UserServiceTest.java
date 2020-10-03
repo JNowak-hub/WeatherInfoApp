@@ -44,6 +44,6 @@ public class UserServiceTest {
         //When
         userService.createNewUser(user);
         //THan
-        assertThat(userService.findUserByUsername(user.getUserName())).isEqualTo(user);
+        assertThat(userService.findUserByUsername(user.getUserName()).getUserName()).isEqualTo(user.getUserName());
     }
 }

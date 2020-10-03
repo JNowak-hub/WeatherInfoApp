@@ -4,10 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 public class UserEntity implements UserDetails {
@@ -24,8 +21,11 @@ public class UserEntity implements UserDetails {
 //    @Enumerated(EnumType.STRING)
 //    @CollectionTable(name="user_roles",
 //    joinColumns = @JoinColumn(name = "user_id"))
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Role.class, mappedBy = "users")
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "users")
     private List<Role> role = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
+    private Set<UserLoggEntity> userLogs = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL, targetEntity = UserSettingsEntity.class)
     private UserSettingsEntity settings;
