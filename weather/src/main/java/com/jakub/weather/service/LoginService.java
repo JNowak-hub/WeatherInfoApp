@@ -18,7 +18,7 @@ public class LoginService {
 
     private AuthenticationManager authenticationManager;
 
-    public LoginService(AuthenticationManager authenticationManager, UserDetailsServiceImpl userDetailsService) {
+    public LoginService(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 

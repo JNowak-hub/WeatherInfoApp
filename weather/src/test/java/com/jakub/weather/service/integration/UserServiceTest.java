@@ -1,10 +1,11 @@
-package com.jakub.weather.service;
+package com.jakub.weather.service.integration;
 
 import com.jakub.weather.configuration.CustomAuthorizationManager;
 import com.jakub.weather.model.weather.user.Role;
 import com.jakub.weather.model.weather.user.RoleEnum;
 import com.jakub.weather.model.weather.user.UserEntity;
 import com.jakub.weather.repo.UserRepo;
+import com.jakub.weather.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

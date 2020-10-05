@@ -1,4 +1,4 @@
-package com.jakub.weather;
+package com.jakub.weather.service.integration;
 
 import com.jakub.weather.exceptions.WrongInputException;
 import com.jakub.weather.model.weather.WeatherResponse;

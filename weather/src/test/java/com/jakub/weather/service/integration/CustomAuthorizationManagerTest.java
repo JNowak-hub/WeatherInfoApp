@@ -1,20 +1,25 @@
-package com.jakub.weather.service;
+package com.jakub.weather.service.integration;
 
 import com.jakub.weather.configuration.CustomAuthorizationManager;
+import com.jakub.weather.exceptions.UserNotFoundException;
 import com.jakub.weather.model.weather.user.RoleEnum;
 import com.jakub.weather.model.weather.user.UserEntity;
+import com.jakub.weather.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 @SpringBootTest
 public class CustomAuthorizationManagerTest {
@@ -60,15 +65,18 @@ public class CustomAuthorizationManagerTest {
     public void Given_Wrong_UserName_When_authenticate_Then_Throw_UserNotFoundException() {
         Authentication userToAuthenticate = new UsernamePasswordAuthenticationToken("WrongUserName", user.getPassword());
         //when
-        Authentication authentication = authorizationManager.authenticate(userToAuthenticate);
-        //than throw UserNotFoundException exception
+        UserNotFoundException userNotFoundException = assertThrows(UserNotFoundException.class, () -> authorizationManager.authenticate(userToAuthenticate));
+        //than
+        assertThat(userNotFoundException.getMessage()).isEqualTo("User : " + "WrongUserName" + " doesn't exists");
+
     }
 
     @Test
     public void Given_Wrong_Password_When_authenticate_Then_Throw_BadCredentialsException() {
         Authentication userToAuthenticate = new UsernamePasswordAuthenticationToken(user.getUserName(), "wrongPassword");
         //when
-        Authentication authentication = authorizationManager.authenticate(userToAuthenticate);
-        //than throw UserNotFoundException exception
+        BadCredentialsException userNotFoundException = assertThrows(BadCredentialsException.class, () -> authorizationManager.authenticate(userToAuthenticate));
+        //than
+        assertThat(userNotFoundException.getMessage()).isEqualTo("Bad credentials");
     }
 }
