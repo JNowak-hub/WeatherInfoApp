@@ -34,20 +34,15 @@ public class CustomAuthorizationManagerTest {
     private UserEntity user = new UserEntity();
     private final String USER_PASSWORD = "password";
     private final String USERNAME = "username";
-    private final RoleEnum ROLE = RoleEnum.USER;
-
 
     @BeforeEach
     void init() {
-        System.out.println("BEFORE");
         user.setPassword(USER_PASSWORD);
-
         user.setUserName(USERNAME);
         userService.createNewUser(user);
     }
     @AfterEach
     void cleanUp(){
-        System.out.println("AFTER");
         userService.deleteUserByUserName(user.getUserName());
     }
 
