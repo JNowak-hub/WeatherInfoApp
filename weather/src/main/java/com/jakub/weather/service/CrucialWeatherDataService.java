@@ -35,24 +35,30 @@ public class CrucialWeatherDataService {
                 .getContext()
                 .getAuthentication()
                 .getPrincipal()).getUsername();
-
         UserEntity user = userService.findUserByUsername(currentUsername);
+        return getDataByTypeAndSaveApiCallHistory(cityName, dataType, user);
+    }
+
+    private String getDataByTypeAndSaveApiCallHistory(String cityName, String dataType, UserEntity user) {
         if (dataType == null) {
             throw new WeatherNotFoundException("input dataType cannot be null.");
-        } else if (checkStringIfNotEmptyOrNull(dataType) && dataType.equals("humidity")) {
-            historyService.callApi("Humidity in " + cityName + " is " + getHumidity(cityName), user);
-            return "Humidity in " + cityName + " is " + getHumidity(cityName);
-        } else if (checkStringIfNotEmptyOrNull(dataType) && dataType.equals("pressure")) {
-            historyService.callApi("Pressure in " + cityName + " is " + getPressure(cityName), user);
-            return "Pressure in " + cityName + " is " + getPressure(cityName);
-        } else if (checkStringIfNotEmptyOrNull(dataType) && dataType.equals("wind")) {
-            historyService.callApi("Wind in " + cityName + " is " + getWindInformation(cityName), user);
-            return "Wind in " + cityName + " is " + getWindInformation(cityName);
-        } else if (checkStringIfNotEmptyOrNull(dataType) && dataType.equals("temperature")) {
-            historyService.callApi("Temperature in " + cityName + " is " + getTemperature(cityName), user);
-            return "Temperature in " + cityName + " is " + getTemperature(cityName);
-        } else
-            throw new WeatherNotFoundException("Couldn't find data. Try to type correct information type.");
+        }
+        switch (dataType){
+            case "humidity":
+                historyService.callApi("Humidity in " + cityName + " is " + getHumidity(cityName), user);
+                return "Humidity in " + cityName + " is " + getHumidity(cityName);
+            case "pressure":
+                historyService.callApi("Pressure in " + cityName + " is " + getPressure(cityName), user);
+                return "Pressure in " + cityName + " is " + getPressure(cityName);
+            case "wind":
+                historyService.callApi("Wind in " + cityName + " is " + getWindInformation(cityName), user);
+                return "Wind in " + cityName + " is " + getWindInformation(cityName);
+            case "temperature":
+                historyService.callApi("Temperature in " + cityName + " is " + getTemperature(cityName), user);
+                return "Temperature in " + cityName + " is " + getTemperature(cityName);
+            default:
+                throw new WeatherNotFoundException("Couldn't find data. Try to type correct information type.");
+        }
     }
 
 
@@ -67,10 +73,6 @@ public class CrucialWeatherDataService {
         weatherInfo.setWindInfo(weatherData.getWind());
 
         return weatherInfo;
-    }
-
-    private boolean checkStringIfNotEmptyOrNull(String dataType) {
-        return !dataType.isEmpty() && !dataType.isBlank();
     }
 
     private Double getTemperature(String cityName) {
