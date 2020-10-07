@@ -31,10 +31,8 @@ public class UserSettingsService {
     }
 
     public void deleteUserSettings(UserEntity user){
-        if(user == null){
-            throw new UserNotFoundException("User Not found");
-        }
-        settingsRepo.deleteUserSettings(user.getId());
+        UserEntity foundUser = userService.findUserByUsername(user.getUsername());
+        settingsRepo.deleteUserSettings(foundUser.getId());
     }
 
     public UserSettingsEntity getUserSetting(UserEntity user){
@@ -48,7 +46,7 @@ public class UserSettingsService {
     @Transactional
     public void updateUserSettings(UserSettingRequest request){
         UserEntity currentUser = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserEntity userInDb = userService.findById(currentUser.getId());
+        UserEntity userInDb = userService.findUserByUsername(currentUser.getUsername());
         settingMapper.changeSettings(request, userInDb);
         userService.saveUser(userInDb);
     }
