@@ -3,6 +3,7 @@ package com.jakub.weather.controller;
 import com.jakub.weather.model.weather.dto.UserSettingRequest;
 import com.jakub.weather.service.UserService;
 import com.jakub.weather.service.UserSettingsService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ public class UserController {
         this.userSettingsService = userSettingsService;
     }
 
+    @ApiOperation(value = "Changes default settings", notes = "Values to change should be provided, user will be taken from security context holder")
     @PostMapping("/update/Settings")
     public ResponseEntity.BodyBuilder updateUserSettings(@RequestBody UserSettingRequest request){
         userSettingsService.updateUserSettings(request);

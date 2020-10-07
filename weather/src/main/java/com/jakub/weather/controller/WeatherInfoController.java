@@ -4,6 +4,7 @@ import com.jakub.weather.model.weather.dto.CrucialWeatherData;
 import com.jakub.weather.model.weather.user.UserEntity;
 import com.jakub.weather.service.CrucialWeatherDataService;
 import com.jakub.weather.service.UserSettingsService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +23,13 @@ public class WeatherInfoController {
         this.service = service;
         this.settingsService = settingsService;
     }
-
+    @ApiOperation(value = "Return specific weather information based on dataType", notes = "First parameter is city and second is dataType choose one of following: temperature, humidity, wind, pressure")
     @GetMapping("/data")
     public String getTemperature(@RequestParam String cityName, @RequestParam String dataType){
             return service.getDataByType(cityName, dataType);
     }
 
+    @ApiOperation(value = "Returns full data collected Via external weather info api", notes = "values will come as JSON format")
     @GetMapping("/data/default")
     public ResponseEntity<CrucialWeatherData> getDefaultWeatherData(){
         UserEntity user = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
