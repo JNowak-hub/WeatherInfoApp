@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 
 @SpringBootTest
-public class CrutialWeatherDataServiceTest {
+public class CrucialWeatherDataServiceTest {
 
     private static final double WIND_DEG = 1.0;
     private static final double WIND_SPEED = 50.0;
