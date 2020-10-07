@@ -1,46 +1,27 @@
 package com.jakub.weather.service.unit;
 
-import com.jakub.weather.exceptions.UserAlreadyExists;
 import com.jakub.weather.exceptions.UserNotFoundException;
 import com.jakub.weather.exceptions.UserSettingsNotFoundException;
-import com.jakub.weather.exceptions.WrongInputException;
 import com.jakub.weather.model.weather.dto.UserSettingRequest;
-import com.jakub.weather.model.weather.user.Role;
 import com.jakub.weather.model.weather.user.UserEntity;
 import com.jakub.weather.model.weather.user.UserSettingsEntity;
-import com.jakub.weather.repo.UserRepo;
 import com.jakub.weather.repo.UserSettingsEntiyRepo;
 import com.jakub.weather.service.*;
 import com.jakub.weather.utils.UserSettingMapper;
-import org.apache.catalina.User;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithSecurityContext;
-import org.springframework.security.test.context.support.WithSecurityContextFactory;
-import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
