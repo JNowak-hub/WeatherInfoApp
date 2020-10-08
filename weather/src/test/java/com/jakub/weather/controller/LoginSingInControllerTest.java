@@ -4,15 +4,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jakub.weather.configuration.CustomExceptionHandler;
 import com.jakub.weather.exceptions.UserAlreadyExists;
 import com.jakub.weather.exceptions.WrongInputException;
+import com.jakub.weather.model.weather.authorization.AuthorizationRequest;
 import com.jakub.weather.model.weather.user.UserEntity;
 import com.jakub.weather.service.LoginService;
 import com.jakub.weather.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
@@ -26,16 +30,14 @@ public class LoginSingInControllerTest {
 
     private MockMvc mockMvc;
 
+    @Mock
     private UserService userService;
+    @Mock
     private LoginService loginService;
-
+    @InjectMocks
     private LoginSingInController controller;
     @BeforeEach
     void mockSetup() {
-        userService = mock(UserService.class);
-        loginService = mock(LoginService.class);
-        controller = new LoginSingInController(userService, loginService);
-
         this.mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
                 .setControllerAdvice(new CustomExceptionHandler())
@@ -86,7 +88,7 @@ public class LoginSingInControllerTest {
 //        mockMvc.perform(post("/api/auth/login")
 //        .contentType(MediaType.APPLICATION_JSON)
 //        .content(objectMapper.writeValueAsString(authRequest)))
-//                .andExpect(null);
+//                .andExpect(ResultMatcher.matchAll());
 //    }
 
 

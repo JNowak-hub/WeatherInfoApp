@@ -46,9 +46,10 @@ public class UserService {
 
     @Transactional
     public UserEntity createNewUser(UserEntity userEntity) {
-
         validateUser(userEntity);
-
+        if (userRepo.findByUsername(userEntity.getUserName()).isPresent()) {
+            throw new UserAlreadyExists("user " + userEntity.getUserName() + " already exists, pick other userName");
+        }
         UserEntity newUser = setUserDefaultSettings(userEntity);
         userRepo.save(newUser);
         loggService.userCreated(newUser);
@@ -63,7 +64,7 @@ public class UserService {
         throw new UserNotFoundException("User : " + username + " doesn't exists");
     }
 
-    public UserEntity saveUser(UserEntity user) {
+    public UserEntity updateUser(UserEntity user) {
         validateUser(user);
         return userRepo.save(user);
     }
@@ -92,9 +93,7 @@ public class UserService {
         if (isNotUserPasswordAndUsernameFilled(userEntity)) {
             throw new WrongInputException("userName or Password cannot be empty");
         }
-        if (userRepo.findByUsername(userEntity.getUserName()).isPresent()) {
-            throw new UserAlreadyExists("user " + userEntity.getUserName() + " already exists, pick other userName");
-        }
+
     }
 
     private boolean isNotUserPasswordAndUsernameFilled(UserEntity userEntity) {

@@ -172,7 +172,7 @@ public class UserServiceTest {
         //given
         when(userRepo.save(user)).thenReturn(user);
         //when
-        UserEntity savedUser = userService.saveUser(user);
+        UserEntity savedUser = userService.updateUser(user);
         //then
         assertThat(savedUser.getUserName()).isEqualTo(user.getUserName());
         assertThat(savedUser.getPassword()).isEqualTo(user.getPassword());
@@ -183,7 +183,7 @@ public class UserServiceTest {
         //given
         user = null;
         //when
-        WrongInputException exception = assertThrows(WrongInputException.class, () -> userService.saveUser(user));
+        WrongInputException exception = assertThrows(WrongInputException.class, () -> userService.updateUser(user));
         //then
         assertThat(exception.getMessage()).isEqualTo("User cannot be null");
     }
@@ -192,7 +192,7 @@ public class UserServiceTest {
         //given
         user.setPassword("");
         //when
-        WrongInputException exception = assertThrows(WrongInputException.class, () -> userService.saveUser(user));
+        WrongInputException exception = assertThrows(WrongInputException.class, () -> userService.updateUser(user));
         //then
         assertThat(exception.getMessage()).isEqualTo("userName or Password cannot be empty");
     }
@@ -201,7 +201,7 @@ public class UserServiceTest {
         //given
         user.setPassword("  ");
         //when
-        WrongInputException exception = assertThrows(WrongInputException.class, () -> userService.saveUser(user));
+        WrongInputException exception = assertThrows(WrongInputException.class, () -> userService.updateUser(user));
         //then
         assertThat(exception.getMessage()).isEqualTo("userName or Password cannot be empty");
     }
@@ -210,7 +210,7 @@ public class UserServiceTest {
         //given
         user.setPassword(null);
         //when
-        WrongInputException exception = assertThrows(WrongInputException.class, () -> userService.saveUser(user));
+        WrongInputException exception = assertThrows(WrongInputException.class, () -> userService.updateUser(user));
         //then
         assertThat(exception.getMessage()).isEqualTo("userName or Password cannot be empty");
     }
@@ -219,7 +219,7 @@ public class UserServiceTest {
         //given
         user.setUserName("");
         //when
-        WrongInputException exception = assertThrows(WrongInputException.class, () -> userService.saveUser(user));
+        WrongInputException exception = assertThrows(WrongInputException.class, () -> userService.updateUser(user));
         //then
         assertThat(exception.getMessage()).isEqualTo("userName or Password cannot be empty");
     }
@@ -228,7 +228,7 @@ public class UserServiceTest {
         //given
         user.setUserName("   ");
         //when
-        WrongInputException exception = assertThrows(WrongInputException.class, () -> userService.saveUser(user));
+        WrongInputException exception = assertThrows(WrongInputException.class, () -> userService.updateUser(user));
         //then
         assertThat(exception.getMessage()).isEqualTo("userName or Password cannot be empty");
     }
@@ -237,7 +237,7 @@ public class UserServiceTest {
         //given
         user.setUserName(null);
         //when
-        WrongInputException exception = assertThrows(WrongInputException.class, () -> userService.saveUser(user));
+        WrongInputException exception = assertThrows(WrongInputException.class, () -> userService.updateUser(user));
         //then
         assertThat(exception.getMessage()).isEqualTo("userName or Password cannot be empty");
     }

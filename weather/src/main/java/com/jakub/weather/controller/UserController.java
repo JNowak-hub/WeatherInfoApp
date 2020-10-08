@@ -23,8 +23,8 @@ public class UserController {
 
     @ApiOperation(value = "Changes default settings", notes = "Values to change should be provided, user will be taken from security context holder")
     @PostMapping("/update/Settings")
-    public ResponseEntity.BodyBuilder updateUserSettings(@RequestBody UserSettingRequest request){
+    public ResponseEntity<UserSettingRequest> updateUserSettings(@RequestBody UserSettingRequest request){
         userSettingsService.updateUserSettings(request);
-        return ResponseEntity.status(HttpStatus.OK);
+        return ResponseEntity.ok(request);
     }
 }

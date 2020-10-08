@@ -8,6 +8,7 @@ import com.jakub.weather.model.weather.user.UserSettingsEntity;
 import com.jakub.weather.repo.UserSettingsEntiyRepo;
 import com.jakub.weather.service.*;
 import com.jakub.weather.utils.UserSettingMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -37,6 +38,15 @@ public class UserSettingsServiceTest {
     @InjectMocks
     private UserSettingsService settingsService;
     UserEntity user = new UserEntity("username", "password");
+
+    @BeforeEach
+    void setSecurityContext() {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
+        Authentication auth = new
+                UsernamePasswordAuthenticationToken(user, user.getPassword(), grantedAuthorities);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+    }
 
     @Test
     void when_deleteUserSettings_then_SettingsRepoDelete() {
@@ -84,31 +94,21 @@ public class UserSettingsServiceTest {
     void when_updateUserSettings_then_updateSettings() {
         //given
         user.setId(1L);
-        setSecurityContext();
         when(userService.findUserByUsername(user.getUsername())).thenReturn(user);
         UserSettingRequest request = new UserSettingRequest();
         //when
         settingsService.updateUserSettings(request);
         //then
         verify(settingMapper).changeSettings(request, user);
-        verify(userService).saveUser(user);
+        verify(userService).updateUser(user);
     }
     @Test
     void when_updateUserSettings_then_throwUserNotFoundException(){
-        setSecurityContext();
+        //given
         UserSettingRequest request = new UserSettingRequest();
         when(userService.findUserByUsername(user.getUsername())).thenThrow(UserNotFoundException.class);
+        //when /then
         assertThrows(UserNotFoundException.class, ()-> settingsService.updateUserSettings(request));
     }
-
-    private void setSecurityContext() {
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
-        Authentication auth = new
-                UsernamePasswordAuthenticationToken(user, user.getPassword(), grantedAuthorities);
-        SecurityContextHolder.getContext().setAuthentication(auth);
-    }
-
-
 
 }
