@@ -1,6 +1,8 @@
 package com.jakub.weather.model.weather.authorization;
 
-public class AuthorizationRequest {
+import java.io.Serializable;
+
+public class AuthorizationRequest implements Serializable {
 
     private String userName;
     private String password;

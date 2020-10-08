@@ -9,6 +9,8 @@ import com.jakub.weather.repo.UserSettingsEntiyRepo;
 import com.jakub.weather.service.*;
 import com.jakub.weather.utils.UserSettingMapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,16 +28,19 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class UserSettingsServiceTest {
+    @Mock
     private UserSettingMapper settingMapper;
+    @Mock
     private UserSettingsEntiyRepo settingsRepo;
+    @Mock
     private UserService userService;
+    @InjectMocks
     private UserSettingsService settingsService;
     UserEntity user = new UserEntity("username", "password");
 
     @Test
     void when_deleteUserSettings_then_SettingsRepoDelete() {
         //given
-        mockSetup();
         user.setId(1L);
         when(userService.findUserByUsername(user.getUsername())).thenReturn(user);
         //when
@@ -46,7 +51,6 @@ public class UserSettingsServiceTest {
 
     @Test
     void when_deleteUserSettings_then_throwUserNotFoundException() {
-        mockSetup();
         when(userService.findUserByUsername(anyString())).thenThrow(UserNotFoundException.class);
         assertThrows(UserNotFoundException.class, () -> settingsService.deleteUserSettings(user));
     }
@@ -54,7 +58,6 @@ public class UserSettingsServiceTest {
     @Test
     void when_getUserSettings_then_returnSettings() {
         //given
-        mockSetup();
         UserSettingsEntity settings = new UserSettingsEntity();
         settings.setDefaultCity("Wroclaw");
         settings.setUser(user);
@@ -69,7 +72,6 @@ public class UserSettingsServiceTest {
     @Test
     void when_getUserSettings_then_throwUserSettingsNotFoundException() {
         //given
-        mockSetup();
         user.setId(1L);
         when(settingsRepo.getUserSettingsByUserId(user.getId())).thenReturn(Optional.empty());
         //when
@@ -81,7 +83,6 @@ public class UserSettingsServiceTest {
     @Test
     void when_updateUserSettings_then_updateSettings() {
         //given
-        mockSetup();
         user.setId(1L);
         setSecurityContext();
         when(userService.findUserByUsername(user.getUsername())).thenReturn(user);
@@ -94,7 +95,6 @@ public class UserSettingsServiceTest {
     }
     @Test
     void when_updateUserSettings_then_throwUserNotFoundException(){
-        mockSetup();
         setSecurityContext();
         UserSettingRequest request = new UserSettingRequest();
         when(userService.findUserByUsername(user.getUsername())).thenThrow(UserNotFoundException.class);
@@ -109,11 +109,6 @@ public class UserSettingsServiceTest {
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
-    private void mockSetup() {
-        settingMapper = mock(UserSettingMapper.class);
-        settingsRepo = mock(UserSettingsEntiyRepo.class);
-        userService = mock(UserService.class);
-        settingsService = new UserSettingsService(settingMapper, settingsRepo, userService);
-    }
+
 
 }

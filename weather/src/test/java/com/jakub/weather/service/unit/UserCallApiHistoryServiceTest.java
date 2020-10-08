@@ -4,6 +4,8 @@ import com.jakub.weather.model.weather.user.UserEntity;
 import com.jakub.weather.repo.UserApiCallHistoryRepo;
 import com.jakub.weather.service.UserApiCAllHistoryService;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,16 +16,16 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class UserCallApiHistoryServiceTest {
 
-    private UserApiCAllHistoryService apiCAllHistoryService;
+    @Mock
     private UserApiCallHistoryRepo historyRepo;
+    @InjectMocks
+    private UserApiCAllHistoryService apiCAllHistoryService;
     private UserEntity user = new UserEntity("username", "password");
     private String data = "Some data";
 
     @Test
     void when_callApi_then_historyRepoSave(){
         //given
-        historyRepo = mock(UserApiCallHistoryRepo.class);
-        apiCAllHistoryService = new UserApiCAllHistoryService(historyRepo);
         //when
         apiCAllHistoryService.callApi(data, user);
         //then
@@ -33,8 +35,6 @@ public class UserCallApiHistoryServiceTest {
     @Test
     void when_callApiWithNullData_then_throw_WrongInputException(){
         //given
-        historyRepo = mock(UserApiCallHistoryRepo.class);
-        apiCAllHistoryService = new UserApiCAllHistoryService(historyRepo);
         data = null;
         //when
         WrongInputException exception = assertThrows(WrongInputException.class, () -> apiCAllHistoryService.callApi(data, user));
@@ -45,8 +45,6 @@ public class UserCallApiHistoryServiceTest {
     @Test
     void when_callApiWithBlankData_then_throw_WrongInputException(){
         //given
-        historyRepo = mock(UserApiCallHistoryRepo.class);
-        apiCAllHistoryService = new UserApiCAllHistoryService(historyRepo);
         data = "    ";
         //when
         WrongInputException exception = assertThrows(WrongInputException.class, () -> apiCAllHistoryService.callApi(data, user));
@@ -57,8 +55,6 @@ public class UserCallApiHistoryServiceTest {
     @Test
     void when_callApiWithEmptyData_then_throw_WrongInputException(){
         //given
-        historyRepo = mock(UserApiCallHistoryRepo.class);
-        apiCAllHistoryService = new UserApiCAllHistoryService(historyRepo);
         data = "";
         //when
         WrongInputException exception = assertThrows(WrongInputException.class, () -> apiCAllHistoryService.callApi(data, user));

@@ -3,7 +3,10 @@ package com.jakub.weather.service.unit;
 import com.jakub.weather.model.weather.user.UserEntity;
 import com.jakub.weather.service.LogOutSucessHandler;
 import com.jakub.weather.service.UserLoggService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,17 +25,27 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class LogOutSuccesHandlerTest {
+    @Mock
     private UserLoggService loggService;
+    @Mock
     private HttpServletResponse response;
+    @Mock
     private HttpServletRequest request;
+    @InjectMocks
     private LogOutSucessHandler logOutSucessHandler;
     private UserEntity user = new UserEntity("username", "password");
     private Authentication auth;
 
+    @BeforeEach
+    void setUpContextHolder() {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
+        auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), grantedAuthorities);
+    }
+
     @Test
     void when_onLogoutSuccess_then_logLogOutSuccess() throws IOException, ServletException {
         //given
-        setUpMock();
         setUpContextHolder();
         //when
         logOutSucessHandler.onLogoutSuccess(request,response,auth);
@@ -40,17 +53,4 @@ public class LogOutSuccesHandlerTest {
         verify(loggService).logLogout(any());
     }
 
-
-    private void setUpContextHolder() {
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
-        auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), grantedAuthorities);
-    }
-
-    private void setUpMock(){
-        loggService = mock(UserLoggService.class);
-        request = mock(HttpServletRequest.class);
-        response = mock(HttpServletResponse.class);
-        logOutSucessHandler = new LogOutSucessHandler(loggService);
-    }
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/api/login")
+@RequestMapping("/api/auth")
 //@CrossOrigin({"http://localhost:3000","http://localhost:8080"})
 public class LoginSingInController {
 
@@ -27,16 +27,15 @@ public class LoginSingInController {
 
     @ApiOperation(value = "Creates new account with username and password", notes = "Username and password needs to be provided here as JSON")
     @PostMapping("/signIn")
-    public ResponseEntity<UserEntity> singIn(@RequestBody UserEntity user){
+    public ResponseEntity<String> singIn(@RequestBody UserEntity user){
 
         UserEntity newUser = service.createNewUser(user);
 
-        return ResponseEntity.ok(newUser);
+        return ResponseEntity.ok("user " + newUser.getUserName() + " created");
     }
 
     @ApiOperation(value = "Authorization of User based on username and password", notes = "Username and password needs to be provided here as JSON")
-    @SneakyThrows
-    @PostMapping
+    @PostMapping("/login")
     public ResponseEntity<HttpServletResponse> login(@RequestBody AuthorizationRequest authRequest, HttpServletResponse response){
         loginService.authorization(authRequest);
         response.setHeader("Location", "http://localhost:3000/Home");

@@ -5,6 +5,8 @@ import com.jakub.weather.model.weather.user.Role;
 import com.jakub.weather.repo.RoleRepo;
 import com.jakub.weather.service.*;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Optional;
 
@@ -14,36 +16,31 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class RoleServiceTest {
-
+    @Mock
+    private RoleRepo repo;
+    @InjectMocks
+    private RoleService roleService;
     @Test
-    void when_getRoleByName_than_returnRole(){
-
+    void when_getRoleByName_then_returnRole(){
+        //given
         Role role = new Role();
         role.setRole("User");
-
-        RoleRepo repo = mock(RoleRepo.class);
         when(repo.findByName("User")).thenReturn(Optional.ofNullable(role));
-
-        RoleService roleService = new RoleService(repo);
-
+        //when
         Role roleByName = roleService.getRoleByName("User");
-
+        //then
         assertThat(roleByName).isEqualTo(role);
     }
 
     @Test
     void when_getRoleByName_than_throwsRoleNotFoundException(){
-
+        //given
         Role role = new Role();
         role.setRole("User");
-
-        RoleRepo repo = mock(RoleRepo.class);
         when(repo.findByName("User")).thenReturn(Optional.ofNullable(null));
-
-        RoleService roleService = new RoleService(repo);
-
+        //when
         RoleNotFoundException roleNotFoundException = assertThrows(RoleNotFoundException.class, () -> roleService.getRoleByName("User"));
-
+        //then
         assertThat(roleNotFoundException.getMessage()).isEqualTo("No such role as User");
     }
 
