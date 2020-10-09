@@ -2,20 +2,17 @@ package com.jakub.weather.service.integration;
 
 import com.jakub.weather.configuration.CustomAuthorizationManager;
 import com.jakub.weather.exceptions.UserNotFoundException;
-import com.jakub.weather.model.weather.user.RoleEnum;
-import com.jakub.weather.model.weather.user.UserEntity;
+import com.jakub.weather.model.user.UserEntity;
 import com.jakub.weather.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;

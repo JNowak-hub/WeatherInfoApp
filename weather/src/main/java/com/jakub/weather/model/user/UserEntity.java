@@ -1,4 +1,4 @@
-package com.jakub.weather.model.weather.user;
+package com.jakub.weather.model.user;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

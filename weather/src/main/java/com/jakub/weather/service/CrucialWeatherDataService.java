@@ -3,15 +3,12 @@ package com.jakub.weather.service;
 import com.jakub.weather.exceptions.WeatherNotFoundException;
 import com.jakub.weather.model.weather.WeatherResponse;
 import com.jakub.weather.model.weather.Wind;
-import com.jakub.weather.model.weather.dto.CrucialWeatherData;
-import com.jakub.weather.model.weather.user.UserEntity;
+import com.jakub.weather.model.dto.CrucialWeatherData;
+import com.jakub.weather.model.user.UserEntity;
 import com.jakub.weather.utils.WeatherApiWebClient;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class CrucialWeatherDataService {

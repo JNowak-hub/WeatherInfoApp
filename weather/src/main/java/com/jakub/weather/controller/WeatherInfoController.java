@@ -1,7 +1,7 @@
 package com.jakub.weather.controller;
 
-import com.jakub.weather.model.weather.dto.CrucialWeatherData;
-import com.jakub.weather.model.weather.user.UserEntity;
+import com.jakub.weather.model.dto.CrucialWeatherData;
+import com.jakub.weather.model.user.UserEntity;
 import com.jakub.weather.service.CrucialWeatherDataService;
 import com.jakub.weather.service.UserSettingsService;
 import io.swagger.annotations.ApiOperation;
@@ -25,8 +25,8 @@ public class WeatherInfoController {
     }
     @ApiOperation(value = "Return specific weather information based on dataType", notes = "First parameter is city and second is dataType choose one of following: temperature, humidity, wind, pressure")
     @GetMapping("/data")
-    public String getTemperature(@RequestParam String cityName, @RequestParam String dataType){
-            return service.getDataByType(cityName, dataType);
+    public ResponseEntity<String> getDataByType(@RequestParam String cityName, @RequestParam String dataType){
+            return ResponseEntity.ok(service.getDataByType(cityName, dataType));
     }
 
     @ApiOperation(value = "Returns full data collected Via external weather info api", notes = "values will come as JSON format")

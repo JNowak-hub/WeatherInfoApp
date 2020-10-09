@@ -4,7 +4,7 @@ import com.jakub.weather.exceptions.WeatherNotFoundException;
 import com.jakub.weather.model.weather.WeatherInfo;
 import com.jakub.weather.model.weather.WeatherResponse;
 import com.jakub.weather.model.weather.Wind;
-import com.jakub.weather.model.weather.dto.CrucialWeatherData;
+import com.jakub.weather.model.dto.CrucialWeatherData;
 import com.jakub.weather.service.CrucialWeatherDataService;
 import com.jakub.weather.service.UserApiCAllHistoryService;
 import com.jakub.weather.service.UserService;

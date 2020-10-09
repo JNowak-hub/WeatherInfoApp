@@ -1,4 +1,4 @@
-package com.jakub.weather.model.weather.user;
+package com.jakub.weather.model.user;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

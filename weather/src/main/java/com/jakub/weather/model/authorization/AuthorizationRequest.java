@@ -1,4 +1,4 @@
-package com.jakub.weather.model.weather.authorization;
+package com.jakub.weather.model.authorization;
 
 import java.io.Serializable;
 

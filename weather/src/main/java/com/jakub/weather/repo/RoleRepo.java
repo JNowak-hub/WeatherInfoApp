@@ -1,6 +1,6 @@
 package com.jakub.weather.repo;
 
-import com.jakub.weather.model.weather.user.Role;
+import com.jakub.weather.model.user.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

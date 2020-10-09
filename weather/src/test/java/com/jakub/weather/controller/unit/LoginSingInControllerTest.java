@@ -1,11 +1,11 @@
-package com.jakub.weather.controller;
+package com.jakub.weather.controller.unit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jakub.weather.configuration.CustomExceptionHandler;
+import com.jakub.weather.controller.LoginSingInController;
 import com.jakub.weather.exceptions.UserAlreadyExists;
 import com.jakub.weather.exceptions.WrongInputException;
-import com.jakub.weather.model.weather.authorization.AuthorizationRequest;
-import com.jakub.weather.model.weather.user.UserEntity;
+import com.jakub.weather.model.user.UserEntity;
 import com.jakub.weather.service.LoginService;
 import com.jakub.weather.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 

@@ -1,10 +1,8 @@
 package com.jakub.weather.controller;
 
-import com.jakub.weather.model.weather.dto.UserSettingRequest;
-import com.jakub.weather.service.UserService;
+import com.jakub.weather.model.dto.UserSettingRequest;
 import com.jakub.weather.service.UserSettingsService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

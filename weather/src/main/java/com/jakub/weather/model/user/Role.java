@@ -1,6 +1,5 @@
-package com.jakub.weather.model.weather.user;
+package com.jakub.weather.model.user;
 
-import org.hibernate.annotations.Cascade;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;

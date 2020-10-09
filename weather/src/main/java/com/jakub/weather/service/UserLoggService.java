@@ -1,8 +1,8 @@
 package com.jakub.weather.service;
 
 import com.jakub.weather.exceptions.UserNotFoundException;
-import com.jakub.weather.model.weather.user.UserEntity;
-import com.jakub.weather.model.weather.user.UserLoggEntity;
+import com.jakub.weather.model.user.UserEntity;
+import com.jakub.weather.model.user.UserLoggEntity;
 import com.jakub.weather.repo.UserLoggEntityRepo;
 import org.springframework.stereotype.Service;
 

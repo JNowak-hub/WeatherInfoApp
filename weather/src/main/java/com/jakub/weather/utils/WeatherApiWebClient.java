@@ -3,7 +3,6 @@ package com.jakub.weather.utils;
 import com.jakub.weather.exceptions.WeatherNotFoundException;
 import com.jakub.weather.exceptions.WrongInputException;
 import com.jakub.weather.model.weather.WeatherResponse;
-import com.jakub.weather.model.weather.user.UserEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;

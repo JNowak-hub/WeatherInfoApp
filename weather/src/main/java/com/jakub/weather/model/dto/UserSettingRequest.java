@@ -1,4 +1,4 @@
-package com.jakub.weather.model.weather.dto;
+package com.jakub.weather.model.dto;
 
 public class UserSettingRequest {
 

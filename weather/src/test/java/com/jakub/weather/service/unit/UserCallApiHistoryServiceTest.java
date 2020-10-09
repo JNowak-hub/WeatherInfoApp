@@ -1,6 +1,6 @@
 package com.jakub.weather.service.unit;
 import com.jakub.weather.exceptions.WrongInputException;
-import com.jakub.weather.model.weather.user.UserEntity;
+import com.jakub.weather.model.user.UserEntity;
 import com.jakub.weather.repo.UserApiCallHistoryRepo;
 import com.jakub.weather.service.UserApiCAllHistoryService;
 import org.junit.jupiter.api.Test;

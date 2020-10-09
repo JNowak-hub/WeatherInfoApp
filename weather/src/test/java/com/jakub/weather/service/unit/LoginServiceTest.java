@@ -1,6 +1,6 @@
 package com.jakub.weather.service.unit;
 import com.jakub.weather.configuration.CustomAuthorizationManager;
-import com.jakub.weather.model.weather.authorization.AuthorizationRequest;
+import com.jakub.weather.model.authorization.AuthorizationRequest;
 import com.jakub.weather.service.LoginService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

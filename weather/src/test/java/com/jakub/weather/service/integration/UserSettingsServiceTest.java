@@ -1,8 +1,7 @@
 package com.jakub.weather.service.integration;
 
-import com.jakub.weather.model.weather.user.RoleEnum;
-import com.jakub.weather.model.weather.user.UserEntity;
-import com.jakub.weather.model.weather.user.UserSettingsEntity;
+import com.jakub.weather.model.user.UserEntity;
+import com.jakub.weather.model.user.UserSettingsEntity;
 import com.jakub.weather.service.UserApiCAllHistoryService;
 import com.jakub.weather.service.UserService;
 import com.jakub.weather.service.UserSettingsService;

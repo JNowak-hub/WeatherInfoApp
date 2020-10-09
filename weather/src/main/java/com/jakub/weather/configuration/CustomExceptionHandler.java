@@ -2,19 +2,13 @@ package com.jakub.weather.configuration;
 
 
 import com.jakub.weather.exceptions.*;
-import com.jakub.weather.model.weather.user.Role;
-import jdk.jfr.Experimental;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @ControllerAdvice
 @RestController

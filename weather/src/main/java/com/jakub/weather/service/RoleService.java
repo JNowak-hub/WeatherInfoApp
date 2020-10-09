@@ -1,7 +1,7 @@
 package com.jakub.weather.service;
 
 import com.jakub.weather.exceptions.RoleNotFoundException;
-import com.jakub.weather.model.weather.user.Role;
+import com.jakub.weather.model.user.Role;
 import com.jakub.weather.repo.RoleRepo;
 import org.springframework.stereotype.Service;
 
